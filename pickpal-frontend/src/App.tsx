@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Star, ThumbsUp, ThumbsDown, Zap } from 'lucide-react'
+import { Search, Star, Check, X, ShoppingCart, Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -158,81 +158,105 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-neutral-50">
+      {/* Header/Navbar */}
+      <header className="bg-white shadow-sm border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Zap className="h-8 w-8 text-indigo-600" />
-              <h1 className="text-2xl font-bold text-gray-900">PickPal</h1>
-              <Badge variant="secondary" className="ml-2">AI Shopping</Badge>
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
+                <ShoppingCart className="h-8 w-8 text-indigo-600" />
+                <h1 className="text-2xl font-bold text-slate-700">PickPal AI</h1>
+              </div>
             </div>
+            <nav className="hidden md:flex items-center space-x-6">
+              <a href="#about" className="text-slate-600 hover:text-slate-900 transition-colors">About</a>
+              <a href="#contact" className="text-slate-600 hover:text-slate-900 transition-colors">Contact</a>
+              <a href="https://github.com/Mathperson271828/PickPal" className="flex items-center space-x-1 text-slate-600 hover:text-slate-900 transition-colors">
+                <Github className="h-4 w-4" />
+                <span>GitHub</span>
+              </a>
+            </nav>
+          </div>
+          <div className="text-center mt-2">
+            <p className="text-slate-600 text-sm">AI-powered shopping recommendations in minutes, not hours.</p>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Find the Perfect Product in Minutes
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-bold text-slate-700 mb-6 leading-tight">
+            Find the Perfect Product<br />
+            <span className="text-indigo-600">in Minutes</span>
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
             Stop wasting hours reading reviews. Our AI analyzes thousands of opinions 
             to recommend the top 3 products for your needs.
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
                 <Input
                   type="text"
-                  placeholder="e.g., Best wireless earbuds under $150"
+                  placeholder="e.g. Best wireless earbuds under $150"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="pl-10 h-12 text-lg"
+                  className="pl-12 h-14 text-lg rounded-xl border-2 border-neutral-200 focus:border-indigo-500 shadow-sm transition-all duration-200"
                 />
               </div>
               <Button 
                 onClick={handleSearch}
                 disabled={isSearching || !query.trim()}
-                className="h-12 px-8 text-lg"
+                className="h-14 px-8 text-lg bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
               >
-                {isSearching ? 'Searching...' : 'Search'}
+                {isSearching ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Searching...</span>
+                  </div>
+                ) : (
+                  'Search'
+                )}
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Results */}
+        {/* Loading State */}
         {isSearching && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center space-x-2">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-              <span className="text-lg text-gray-600">Analyzing reviews and ratings...</span>
+          <div className="text-center py-16">
+            <div className="inline-flex flex-col items-center space-y-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+              <div className="space-y-2">
+                <p className="text-lg font-medium text-slate-700">Analyzing reviews and ratings...</p>
+                <p className="text-sm text-slate-500">This usually takes a few seconds</p>
+              </div>
             </div>
           </div>
         )}
 
+        {/* Results Section */}
         {results.length > 0 && !isSearching && (
-          <div className="space-y-8">
+          <div className="space-y-12 animate-in fade-in duration-500">
             <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 className="text-3xl font-bold text-slate-700 mb-3">
                 Top 3 Recommendations
               </h3>
-              <p className="text-gray-600">
+              <p className="text-slate-600 text-lg">
                 Based on analysis of {results.reduce((sum, product) => sum + product.reviewCount, 0).toLocaleString()} reviews
               </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
+            <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
               {results.map((product, index) => (
-                <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <Card key={product.id} className="overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0">
                   <div className="relative">
                     <img 
                       src={product.image} 
@@ -243,37 +267,46 @@ function App() {
                       }}
                     />
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-indigo-600 text-white">
+                      <Badge className="bg-indigo-600 text-white px-3 py-1 rounded-full font-medium">
                         #{index + 1} Pick
                       </Badge>
                     </div>
                     <div className="absolute top-4 right-4">
-                      <div className="bg-white rounded-full px-3 py-1 flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="font-bold text-sm">{product.score}</span>
+                      <div className="bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1 shadow-sm">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={`h-3 w-3 ${i < Math.floor(product.score) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                            />
+                          ))}
+                        </div>
+                        <span className="font-bold text-sm text-slate-700">{product.score}</span>
                       </div>
                     </div>
                   </div>
                   
-                  <CardHeader>
-                    <CardTitle className="text-xl">{product.name}</CardTitle>
-                    <CardDescription className="text-lg font-semibold text-green-600">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl font-bold text-slate-700">{product.name}</CardTitle>
+                    <CardDescription className="text-2xl font-bold text-emerald-600">
                       {product.price}
                     </CardDescription>
-                    <p className="text-sm text-gray-600 mt-2">{product.summary}</p>
+                    <p className="text-sm text-slate-600 mt-2 leading-relaxed">{product.summary}</p>
                   </CardHeader>
                   
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-6">
                     {/* Pros */}
                     <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <ThumbsUp className="h-4 w-4 text-green-600" />
-                        <span className="font-semibold text-green-700">Pros</span>
+                      <div className="flex items-center space-x-2 mb-3">
+                        <div className="bg-emerald-100 p-1 rounded-full">
+                          <Check className="h-3 w-3 text-emerald-600" />
+                        </div>
+                        <span className="font-semibold text-emerald-700">Pros</span>
                       </div>
-                      <ul className="space-y-1">
+                      <ul className="space-y-2">
                         {product.pros.map((pro, idx) => (
-                          <li key={idx} className="text-sm text-gray-600 flex items-start">
-                            <span className="text-green-500 mr-2">•</span>
+                          <li key={idx} className="text-sm text-slate-600 flex items-start">
+                            <Check className="h-4 w-4 text-emerald-500 mr-2 mt-0.5 flex-shrink-0" />
                             {pro}
                           </li>
                         ))}
@@ -282,24 +315,31 @@ function App() {
                     
                     {/* Cons */}
                     <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <ThumbsDown className="h-4 w-4 text-red-600" />
-                        <span className="font-semibold text-red-700">Cons</span>
+                      <div className="flex items-center space-x-2 mb-3">
+                        <div className="bg-rose-100 p-1 rounded-full">
+                          <X className="h-3 w-3 text-rose-600" />
+                        </div>
+                        <span className="font-semibold text-rose-700">Cons</span>
                       </div>
-                      <ul className="space-y-1">
+                      <ul className="space-y-2">
                         {product.cons.map((con, idx) => (
-                          <li key={idx} className="text-sm text-gray-600 flex items-start">
-                            <span className="text-red-500 mr-2">•</span>
+                          <li key={idx} className="text-sm text-slate-600 flex items-start">
+                            <X className="h-4 w-4 text-rose-500 mr-2 mt-0.5 flex-shrink-0" />
                             {con}
                           </li>
                         ))}
                       </ul>
                     </div>
                     
-                    <div className="pt-2 border-t">
-                      <p className="text-xs text-gray-500">
-                        Based on {product.reviewCount.toLocaleString()} reviews
-                      </p>
+                    <div className="pt-4 border-t border-neutral-200">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-slate-500">
+                          Based on {product.reviewCount.toLocaleString()} reviews
+                        </p>
+                        <Button variant="outline" size="sm" className="rounded-full">
+                          View More
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -308,26 +348,40 @@ function App() {
           </div>
         )}
 
-        {/* Example Queries */}
+        {/* Empty State */}
         {results.length === 0 && !isSearching && (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Try searching for:
-            </h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {['wireless earbuds', 'standing desk', 'coffee maker'].map((example) => (
-                <Button
-                  key={example}
-                  variant="outline"
-                  onClick={() => {
-                    setQuery(example)
-                    setTimeout(() => handleSearch(), 100)
-                  }}
-                  className="capitalize"
-                >
-                  {example}
-                </Button>
-              ))}
+          <div className="text-center py-16">
+            <div className="max-w-md mx-auto">
+              <div className="mb-8">
+                <div className="bg-indigo-100 rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                  <Search className="h-10 w-10 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-700 mb-3">
+                  Type in what you're shopping for, and we'll find the best options for you.
+                </h3>
+                <p className="text-slate-500 mb-8">
+                  Get AI-powered recommendations based on thousands of reviews and ratings.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-sm font-medium text-slate-600 mb-3">Popular searches:</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {['wireless earbuds', 'standing desk', 'coffee maker'].map((example) => (
+                    <Button
+                      key={example}
+                      variant="outline"
+                      onClick={() => {
+                        setQuery(example)
+                        setTimeout(() => handleSearch(), 100)
+                      }}
+                      className="capitalize rounded-full border-2 hover:border-indigo-500 hover:text-indigo-600 transition-colors"
+                    >
+                      {example}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
